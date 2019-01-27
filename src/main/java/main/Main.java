@@ -1,13 +1,15 @@
 package main;
 
 import product.Product;
-import product.ProductService;
+import strategy.DiscountStrategyFactory;
+import strategy.ProductDiscountType;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        DiscountStrategyFactory factory = new DiscountStrategyFactory();
 
         System.out.println("== RTV/AGD Store ==");
         Product productOne = new Product("Samsung TV 55",
@@ -28,18 +30,28 @@ public class Main {
 
 
         System.out.println("Christmas time ...");
-        products.forEach(p->p.setDiscount(ProductService.christmasDiscount(p.getCost())));
-        products.forEach(p->p.showProductInfo());
+        products.forEach(p->p.setDiscount(
+                DiscountStrategyFactory.getDiscountStrategy(
+                        ProductDiscountType.CHRISTMAS,
+                        p.getCost())));
+        products.forEach(Product::showProductInfo);
+
 
 
         System.out.println("\n\nNew Yer time ...");
-        products.forEach(p->p.setDiscount(ProductService.newYearDiscount(p.getCost())));
-        products.forEach(p->p.showProductInfo());
+        products.forEach(p->p.setDiscount(
+                DiscountStrategyFactory.getDiscountStrategy(
+                        ProductDiscountType.NEW_YEAR,
+                        p.getCost())));
+        products.forEach(Product::showProductInfo);
 
 
         System.out.println("\n\nEaster time ...");
-        products.forEach(p->p.setDiscount(ProductService.easterDiscount(p.getCost())));
-        products.forEach(p->p.showProductInfo());
+        products.forEach(p->p.setDiscount(
+                DiscountStrategyFactory.getDiscountStrategy(
+                        ProductDiscountType.EASTER,
+                        p.getCost())));
+        products.forEach(Product::showProductInfo);
 
     }
 }
